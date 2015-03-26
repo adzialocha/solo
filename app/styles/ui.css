@@ -1,0 +1,102 @@
+/* colors */
+
+.green              { background-color: rgb( 69, 253,  69); }
+.green.off          { background-color: rgb( 69, 153,  69); }
+.green.on           { background-color: rgb( 69, 253,  69); }
+.green.active       { background-color: rgb(255, 255, 255); }
+
+.red                { background-color: rgb(255,  82,  82); }
+.red.off            { background-color: rgb(155,  82,  82); }
+.red.on             { background-color: rgb(255,  82,  82); }
+.red.active         { background-color: rgb(255, 255, 255); }
+
+.blue               { background-color: rgb(134, 134, 255); }
+.blue.off           { background-color: rgb(134, 134, 155); }
+.blue.on            { background-color: rgb(134, 134, 255); }
+.blue.active        { background-color: rgb(255, 255, 255); }
+
+.yellow             { background-color: rgb(255, 175,  29); }
+.yellow.off         { background-color: rgb(155, 175,  29); }
+.yellow.on          { background-color: rgb(255, 175,  29); }
+.yellow.active      { background-color: rgb(255, 255, 255); }
+
+/* bar */
+
+.bar
+{
+  height: 100%;
+  display: flex;
+  background-color: rgb(30, 30, 30);
+}
+
+/* button group */
+
+.button-group
+{
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  flex: 1;
+  font-size: 0;
+}
+
+.button-group:first-child
+{
+  text-align: left;
+}
+
+.button-group:last-child
+{
+  text-align: right;
+}
+
+.button-group-item
+{
+  display: inline;
+}
+
+/* buttons */
+
+.button
+{
+  height: 100%;
+  min-height: 50px;
+  min-width: 50px;
+  outline: none;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* matrix */
+
+.matrix
+{
+  height: 100%;
+  flex-direction: row;
+  display: flex;
+}
+
+.matrix__row
+{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  flex: 1;
+}
+
+.matrix__row .toggle
+{
+  flex: 1;
+}
+
+/* utils */
+
+.clear
+{
+  clear: both;
+}

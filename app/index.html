@@ -4,15 +4,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" type="text/css" href="styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="styles/ui.css">
     <link rel="stylesheet" type="text/css" href="styles/app.css">
     <title>CHANNEL TOGGLE INTERFACE</title>
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="bower_components/osc-js/dist/osc.js"></script>
     <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="scripts/ui.js"></script>
+    <script type="text/javascript" src="scripts/ui.toggle.jsx.js"></script>
+    <script type="text/javascript" src="scripts/ui.button.jsx.js"></script>
+    <script type="text/javascript" src="scripts/ui.matrix.jsx.js"></script>
     <script type="text/javascript" src="scripts/app.js"></script>
   </head>
   <body onload="app.init()">
-    <div class="wrapper">
+    <div class="screen">
+      <div class="screen__header">
+        <div class="bar">
+          <div class="button-group push-left">
+            <div class="button-group-item" id="toggle-test"></div>
+            <div class="button-group-item" id="toggle-test-two"></div>
+          </div>
+          <div class="button-group">
+
+          </div>
+          <div class="button-group push-right">
+            <div class="button-group-item" id="button-test"></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen__content" id="matrix"></div>
     </div>
   </body>
 </html>
