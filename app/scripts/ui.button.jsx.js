@@ -18,11 +18,11 @@
       };
     },
 
-    onTouchStart: function(event) {
+    onTouchStart: function() {
       this.setState({ active: true });
     },
 
-    onTouchEnd: function(event) {
+    onTouchEnd: function() {
       this.setState({ active: false });
     },
 
@@ -34,6 +34,8 @@
         className: 'button' + activeStyle + ' ' + this.props.color,
         onTouchStart: this.onTouchStart,
         onTouchEnd: this.onTouchEnd
+        // onMouseDown: this.onTouchStart,
+        // onMouseUp: this.onTouchEnd
       }, this.props.label);
 
     }

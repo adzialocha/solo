@@ -8,7 +8,7 @@
       return {
         label: '',
         color: 'green',
-        index: undefined,
+        id: undefined,
         onStatusChange: function() {
           return false;
         }
@@ -24,13 +24,24 @@
       };
     },
 
+    componentWillReceiveProps: function(nProps) {
+      this.setState(nProps);
+    },
+
     onTouchStart: function() {
       this.setState({ active: true });
     },
 
     onTouchEnd: function($event) {
-      this.setState({ active: false, status: ! this.state.status });
-      this.props.onStatusChange($event, this.state.status, this.props.index);
+
+      var newStatus = ! this.state.status;
+
+      this.setState({ active: false, status: newStatus });
+
+      if (this.props.onStatusChange && typeof this.props.onStatusChange === 'function') {
+          this.props.onStatusChange(this.props.id, newStatus);
+      }
+
     },
 
     render: function() {
@@ -42,6 +53,8 @@
         className: 'button toggle' + activeStyle + statusStyle + ' ' + this.state.color,
         onTouchStart: this.onTouchStart,
         onTouchEnd: this.onTouchEnd
+        // onMouseDown: this.onTouchStart,
+        // onMouseUp: this.onTouchEnd
       }, this.state.label);
 
     }

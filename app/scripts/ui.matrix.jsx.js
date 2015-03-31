@@ -6,38 +6,37 @@
 
     getDefaultProps: function() {
       return {
-        size: 36,
+        cellProps: [],
         onStatusChange: function() {
           return false;
-        }
+        },
+        x: 0,
+        y: 0,
+        elem: null
       };
-    },
-
-    onStatusChange: function($event, tStatus, tIndex) {
-      this.props.onStatusChange(tStatus, tIndex);
     },
 
     getInitialState: function() {
-
-      var DEFAULT_COLOR = 'green';
-
-      var i, colors, labels, status;
-
-      colors = [];
-      labels = [];
-      status = [];
-
-      for (i = 0; i < this.props.size; i++) {
-        colors.push(DEFAULT_COLOR);
-        labels.push(i);
-        status.push(false);
-      }
-
       return {
-        colors: colors,
-        labels: labels,
-        status: status
+        cellProps: this.props.cellProps
       };
+    },
+
+    _onStatusChange: function(tIndex, tStatus) {
+      this.props.onStatusChange(tIndex, tStatus);
+    },
+
+    setCell: function(tIndex, tState) {
+
+      var newCellProps;
+
+      newCellProps = this.state.cellProps;
+
+      Object.keys(tState).forEach(function(eKey) {
+        newCellProps[tIndex][eKey] = tState[eKey];
+      });
+
+      this.setState({ cellProps: newCellProps });
 
     },
 
@@ -50,24 +49,17 @@
 
       matrixElems = [];
 
-      size = Math.sqrt(this.props.size);
+      size = Math.sqrt(this.props.cellProps.length);
       i = 0;
 
-      for (x = 0; x < size; x++) {
+      for (x = 0; x < this.props.x; x++) {
 
         matrixRow = [];
 
-        for (y = 0; y < size; y++) {
-          matrixRow.push(
-            React.createElement(UI.Component.Toggle, {
-              key: i,
-              index: i,
-              color: this.state.colors[i],
-              label: this.state.labels[i],
-              onStatusChange: function($event, tStatus, tIndex) {
-                _this.onStatusChange($event, tStatus, tIndex);
-              }
-            }));
+        for (y = 0; y < this.props.y; y++) {
+          _this.state.cellProps[i].key = i;
+          _this.state.cellProps[i].onStatusChange = _this._onStatusChange;
+          matrixRow.push(React.createElement(_this.props.elem, _this.state.cellProps[i]));
           i++;
         }
 

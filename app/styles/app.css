@@ -3,6 +3,10 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }
 
 html, body
@@ -33,4 +37,10 @@ body
 .screen__content
 {
   height: 90%;
+}
+
+.screen__content__view
+{
+  height: 100%;
+  display: none;
 }
