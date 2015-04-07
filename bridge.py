@@ -1,20 +1,15 @@
-import time, sys, os, pkg_resources
-
-import SocketServer
+import sys
+import os
 
 from twisted.python import log
 from twisted.internet import reactor
-from twisted.application import service
-from twisted.internet.protocol import DatagramProtocol, Protocol, Factory
+from twisted.internet.protocol import DatagramProtocol
 
 from twisted.web.server import Site
 from twisted.web.static import File
 
-from autobahn.twisted.websocket import WebSocketServerProtocol, \
-                                       WebSocketServerFactory
-
-from autobahn.twisted.resource import WebSocketResource, \
-                              HTTPChannelHixie76Aware
+from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
+from autobahn.twisted.resource import HTTPChannelHixie76Aware
 
 # constants
 
@@ -27,89 +22,100 @@ SERVER_HTTP_RESOURCES = 'app'
 CLIENT_IP = '127.0.0.1'
 CLIENT_UDP_PORT = 7500
 
+
 # [HTTP] > [CLIENT WS] > [SERVER WS] > bridge > [SERVER UDP] > [CLIENT UDP]
 
 class Bridge():
 
-  def __init__(self):
-    self.udpServer = None
-    self.wsServer = None
+    def __init__(self):
+        self.udpServer = None
+        self.wsServer = None
 
-  def setUdpServer(self, udpServer):
-    self.udpServer = udpServer
+    def setUdpServer(self, udpServer):
+        self.udpServer = udpServer
 
-  def setWebsocketServer(self, wsServer):
-    self.wsServer = wsServer
+    def setWebsocketServer(self, wsServer):
+        self.wsServer = wsServer
 
-  def udpToWebsocket(self, data):
-    if self.wsServer is not None:
-      self.wsServer.sendMessage(data, True)
+    def udpToWebsocket(self, data):
+        if self.wsServer is not None:
+            self.wsServer.sendMessage(data, True)
 
-  def websocketToUdp(self, data):
-    if self.udpServer is not None:
-      self.udpServer.transport.write(data, (CLIENT_IP, CLIENT_UDP_PORT))
+    def websocketToUdp(self, data):
+        if self.udpServer is not None:
+            self.udpServer.transport.write(data, (CLIENT_IP, CLIENT_UDP_PORT))
+
 
 # udp server
 
 class UDPServer(DatagramProtocol):
 
-  def __init__(self, bridge):
-    self.bridge = bridge
-    self.bridge.setUdpServer(self)
+    def __init__(self, bridge):
+        self.bridge = bridge
+        self.bridge.setUdpServer(self)
 
-  def datagramReceived(self, data, (host, port)):
-    self.bridge.udpToWebsocket(data)
+    def datagramReceived(self, data, (host, port)):
+        self.bridge.udpToWebsocket(data)
+
 
 # websocket server
 
 class BridgedWebSocketServerFactory(WebSocketServerFactory):
 
-  def __init__(self, url, debug, debugCodePaths, bridge):
-    WebSocketServerFactory.__init__(self, url, debug = debug, debugCodePaths = debugCodePaths)
-    self.bridge = bridge
+    def __init__(self, url, debug, debugCodePaths, bridge):
+
+        WebSocketServerFactory.__init__(
+            self,
+            url,
+            debug=debug,
+            debugCodePaths=debugCodePaths
+        )
+
+        self.bridge = bridge
+
 
 class WebSocketServer(WebSocketServerProtocol):
 
-  def onOpen(self):
-    print 'WebSocket connection open.'
+    def onOpen(self):
+        print 'WebSocket connection open.'
 
-  def onConnect(self, request):
-    self.factory.bridge.setWebsocketServer(self)
-    print 'Client connecting: {0}'.format(request.peer)
+    def onConnect(self, request):
+        self.factory.bridge.setWebsocketServer(self)
+        print 'Client connecting: {0}'.format(request.peer)
 
-  def onMessage(self, payload, isBinary):
-    self.factory.bridge.websocketToUdp(payload)
+    def onMessage(self, payload, isBinary):
+        self.factory.bridge.websocketToUdp(payload)
 
-  def onClose(self, wasClean, code, reason):
-    print 'WebSocket connection closed: {0}'.format(reason)
+    def onClose(self, wasClean, code, reason):
+        print 'WebSocket connection closed: {0}'.format(reason)
 
 # initalize servers
 
 if __name__ == '__main__':
 
-  bridge = Bridge()
+    bridge = Bridge()
 
-  log.startLogging(sys.stdout)
+    log.startLogging(sys.stdout)
 
-  # websocket setup
+    # websocket setup
 
-  wsAddress = 'ws://%s:%d' % (SERVER_IP, SERVER_WS_PORT)
+    wsAddress = 'ws://%s:%d' % (SERVER_IP, SERVER_WS_PORT)
 
-  factory = BridgedWebSocketServerFactory(wsAddress, False, False, bridge)
-  factory.protocol = WebSocketServer
-  reactor.listenTCP(SERVER_WS_PORT, factory)
+    factory = BridgedWebSocketServerFactory(wsAddress, False, False, bridge)
+    factory.protocol = WebSocketServer
+    reactor.listenTCP(SERVER_WS_PORT, factory)
 
-  # http setup
+    # http setup
 
-  webdir = os.path.abspath(SERVER_HTTP_RESOURCES)
-  site = Site(File(webdir))
-  site.protocol = HTTPChannelHixie76Aware
-  reactor.listenTCP(SERVER_HTTP_PORT, site)
+    webdir = os.path.abspath(SERVER_HTTP_RESOURCES)
+    site = Site(File(webdir))
+    site.protocol = HTTPChannelHixie76Aware
+    reactor.listenTCP(SERVER_HTTP_PORT, site)
 
-  # udp setup
+    # udp setup
 
-  reactor.listenUDP(SERVER_UDP_PORT, UDPServer(bridge))
+    reactor.listenUDP(SERVER_UDP_PORT, UDPServer(bridge))
 
-  # start session
+    # start session
 
-  reactor.run()
+    reactor.run()
