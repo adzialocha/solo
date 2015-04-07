@@ -24,8 +24,6 @@
 
   function _note(eDuration) {
 
-    console.log(eDuration);
-
     var newState;
 
     _cells.forEach(function(eItem, eIndex) {
