@@ -2,6 +2,13 @@
 
 Channel-Toggle Matrix Interface and editor for OSC (OpenSoundControl) based on [osc-js](https://github.com/marmorkuchen-net/osc-js) and [React](https://facebook.github.io/react/).
 
+![Interface Example 1](https://andreasdzialocha-assets.s3-eu-west-1.amazonaws.com/0u9ajvoyg636usor_solo_interface_1.jpg)
+
+![Interface Example 2](https://andreasdzialocha-assets.s3-eu-west-1.amazonaws.com/wk1yoozq5yfa8aor_solo_interface_2.jpg)
+
+![Interface Example 3](https://andreasdzialocha-assets.s3-eu-west-1.amazonaws.com/sjbx7ckvjkyb9_solo_interface_3.jpg)
+
+
 You need a running node environment with bower, grunt and npm installed.
 
 ### Installation
