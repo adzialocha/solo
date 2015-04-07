@@ -24,6 +24,8 @@
 
   function _note(eDuration) {
 
+    console.log(eDuration);
+
     var newState;
 
     _cells.forEach(function(eItem, eIndex) {
@@ -59,7 +61,7 @@
   function _start() {
 
     if (_active) {
-      _timeout = window.setTimeout(_tick, (60000 / _bpm) / (SMALLEST_SUBDIVISION / 4));
+      _timeout = window.setTimeout(_tick, (60000 / _bpm) / SMALLEST_SUBDIVISION);
     }
 
   }
@@ -68,11 +70,11 @@
 
     var i;
 
-    if (_count % (SMALLEST_SUBDIVISION / 4) === 0) {
+    if (_count % SMALLEST_SUBDIVISION === 0) {
       _count = 0;
     }
 
-    for (i = 1; i <= SMALLEST_SUBDIVISION / 4; i = i * 2) {
+    for (i = 1; i <= SMALLEST_SUBDIVISION; i = i * 2) {
       if (_count % i === 0) {
         _note(SMALLEST_SUBDIVISION / i);
       }

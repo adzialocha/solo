@@ -18,13 +18,13 @@ from autobahn.twisted.resource import WebSocketResource, \
 
 # constants
 
-SERVER_IP = '0.0.0.0'
+SERVER_IP = '127.0.0.1'
 SERVER_UDP_PORT = 7400
 SERVER_WS_PORT = 8000
 SERVER_HTTP_PORT = 9000
 SERVER_HTTP_RESOURCES = 'app'
 
-CLIENT_IP = '192.168.178.20'
+CLIENT_IP = '127.0.0.1'
 CLIENT_UDP_PORT = 7500
 
 # [HTTP] > [CLIENT WS] > [SERVER WS] > bridge > [SERVER UDP] > [CLIENT UDP]

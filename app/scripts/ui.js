@@ -12,7 +12,7 @@
   // namespace
 
   window.UI = {
-    Component: {}
+    Component: {},
     COLOR: COLOR
   };
 

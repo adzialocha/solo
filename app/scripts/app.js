@@ -247,7 +247,11 @@
     _interface = new Interface();
 
     _interface.registerCallback(function($event, eMessage) {
-      console.log('OSC EVENT', eMessage);
+
+      if (eMessage === 'error') {
+        window.alert('OSC CONNECTION ERROR\n' + 'an osc-error occurred');
+      }
+
     });
 
   };
