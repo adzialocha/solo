@@ -85,7 +85,7 @@
       for (y = 0; y < MATRIX_Y_ROWS.length; y++) {
 
         toggleProps[i] = {
-          label: '[' + MATRIX_X_ROWS[x] + '] ' + MATRIX_Y_ROWS[y],
+          label: '[' + MATRIX_X_ROWS[x] + '] ' + MATRIX_Y_ROWS[y] + ' (' + i + ')',
           color: 'red',
           id: i
         };

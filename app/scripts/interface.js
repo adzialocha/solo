@@ -1,9 +1,9 @@
 (function(window, OSC, undefined) {
 
-  var OSC_PATH = '/controls/';
+  var OSC_PATH = '/param/';
 
   var DEFAULT_SERVER_PATH = 'localhost';
-  var DEFAULT_SERVER_PORT = 8080;
+  var DEFAULT_SERVER_PORT = 8000;
 
   // private
 
@@ -37,7 +37,7 @@
       return false;
     }
 
-    payload = eStatus? 1 : 0;
+    payload = eStatus? 1.0 : 0.0;
     msg = new OSC.Message(OSC_PATH, eIndex, payload);
 
     _osc.send(msg);
