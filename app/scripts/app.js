@@ -6,6 +6,7 @@
   var MATRIX_Y_ROWS = [ 'DI', 'C1', 'C2' ];
 
   var VIEW_IDS = [ 'view-main', 'view-frequency', 'view-treshold', 'view-setup' ];
+
   var INITIAL_BPM = 120;
 
   var FREQUENCY_SELECTOR_OPTIONS = [
