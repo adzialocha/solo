@@ -1,15 +1,23 @@
 (function(window, React, UI, Controller, Interface, undefined) {
 
+  // configuration
+
   var MATRIX_X_ROWS = [ 'MUTE', 'LP', 'OCT', 'HP', 'COMP', 'RVB' ];
   var MATRIX_Y_ROWS = [ 'DI', 'C1', 'C2' ];
 
   var VIEW_IDS = [ 'view-main', 'view-frequency', 'view-treshold', 'view-setup' ];
   var INITIAL_BPM = 120;
 
-  var FREQUENCY_SELECTOR_OPTIONS = [ { label: '1', value: 1, }, { label: '2', value: 2, }, { label: '4', value: 4, }, { label: '8', value: 8, }, { label: '16', value: 16 }, { label: '32', value: 32 }, { label: '64', value: 64 }, { label: '128', value: 128 } ]
-
-  var DEFAULT_SET_NAME = 'DEFAULT';
-  var DEFAULT_SCENE_NUMBER = 0;
+  var FREQUENCY_SELECTOR_OPTIONS = [
+    { label: '1',   value: 1, },
+    { label: '2',   value: 2, },
+    { label: '4',   value: 4, },
+    { label: '8',   value: 8, },
+    { label: '16',  value: 16 },
+    { label: '32',  value: 32 },
+    { label: '64',  value: 64 },
+    { label: '128', value: 128 }
+  ];
 
   // modules
 
@@ -17,7 +25,6 @@
 
   // private
 
-  var _set, _scene;
   var _navigationElems = [];
   var _currentView = 0;
 
@@ -38,34 +45,63 @@
   function _renderView() {
 
     React.render(
-      React.createElement(UI.Component.Toggle, { label: 'ACTIVE', onStatusChange: _onMainActiveStateChange }),
+      React.createElement(UI.Component.Toggle, {
+        label: 'ACTIVE',
+        onStatusChange: _onMainActiveStatusChange
+      }),
       document.getElementById('main-active-state')
     );
 
     React.render(
-      React.createElement(UI.Component.Slider, { color: 'yellow', min: 40, max: 200, value: INITIAL_BPM, onStatusChange: _onBPMSliderChange }),
+      React.createElement(UI.Component.Slider, {
+        color: UI.COLOR.YELLOW,
+        min: 40,
+        max: 200,
+        value: INITIAL_BPM,
+        onStatusChange: _onBPMSliderChange
+      }),
       document.getElementById('main-bpm')
     );
 
     // navigation buttons
 
     _navigationElems.push(React.render(
-      React.createElement(UI.Component.Toggle, { id: 0, label: 'MAIN', color: 'blue', onStatusChange: _updateNavigationView }),
+      React.createElement(UI.Component.Toggle, {
+        id: 0,
+        label: 'MAIN',
+        color: UI.COLOR.BLUE,
+        onStatusChange: _updateNavigationView
+      }),
       document.getElementById('button-goto-main')
     ));
 
     _navigationElems.push(React.render(
-      React.createElement(UI.Component.Toggle, { id: 1, label: 'FREQUENCY', color: 'blue', onStatusChange: _updateNavigationView }),
+      React.createElement(UI.Component.Toggle, {
+        id: 1,
+        label: 'FREQUENCY',
+        color: UI.COLOR.BLUE,
+        onStatusChange: _updateNavigationView
+      }),
       document.getElementById('button-goto-frequency')
     ));
 
     _navigationElems.push(React.render(
-      React.createElement(UI.Component.Toggle, { id: 2, label: 'TRESHOLD', color: 'blue', onStatusChange: _updateNavigationView }),
+      React.createElement(UI.Component.Toggle, {
+        id: 2,
+        label: 'TRESHOLD',
+        color: UI.COLOR.BLUE,
+        onStatusChange: _updateNavigationView
+      }),
       document.getElementById('button-goto-treshold')
     ));
 
     _navigationElems.push(React.render(
-      React.createElement(UI.Component.Toggle, { id: 3, label: 'SETUP', color: 'red', onStatusChange: _updateNavigationView }),
+      React.createElement(UI.Component.Toggle, {
+        id: 3,
+        label: 'SETUP',
+        color: UI.COLOR.RED,
+        onStatusChange: _updateNavigationView
+      }),
       document.getElementById('button-goto-setup')
     ));
 
@@ -86,7 +122,7 @@
 
         toggleProps[i] = {
           label: '[' + MATRIX_X_ROWS[x] + '] ' + MATRIX_Y_ROWS[y],
-          color: 'red',
+          color: UI.COLOR.RED,
           id: i
         };
 
@@ -114,7 +150,7 @@
       React.createElement(UI.Component.Matrix, {
         elem: UI.Component.Toggle,
         cellProps: toggleProps,
-        onStatusChange: _onActiveChange,
+        onStatusChange: _onCellStatusChange,
         x: MATRIX_X_ROWS.length,
         y: MATRIX_Y_ROWS.length
       }),
@@ -125,7 +161,7 @@
       React.createElement(UI.Component.Matrix, {
         elem: UI.Component.Selector,
         cellProps: frequencySelectorProps,
-        onStatusChange: _onFrequencyChange,
+        onStatusChange: _onCellFrequencyChange,
         x: MATRIX_X_ROWS.length,
         y: MATRIX_Y_ROWS.length
       }),
@@ -136,7 +172,7 @@
       React.createElement(UI.Component.Matrix, {
         elem: UI.Component.Slider,
         cellProps: tresholdSliderProps,
-        onStatusChange: _onTresholdChange,
+        onStatusChange: _onCellTresholdChange,
         x: MATRIX_X_ROWS.length,
         y: MATRIX_Y_ROWS.length
       }),
@@ -147,19 +183,19 @@
 
   // events
 
-  function _onActiveChange(eCellIndex, eToggleStatus) {
+  function _onCellStatusChange(eCellIndex, eToggleStatus) {
     _controller.setCellState(eCellIndex, eToggleStatus);
   }
 
-  function _onFrequencyChange(eCellIndex, eValue) {
+  function _onCellFrequencyChange(eCellIndex, eValue) {
     _controller.setFrequency(eCellIndex, eValue);
   }
 
-  function _onTresholdChange(eCellIndex, eValue) {
+  function _onCellTresholdChange(eCellIndex, eValue) {
     _controller.setTreshold(eCellIndex, eValue);
   }
 
-  function _onMainActiveStateChange(eToggleIndex, eToggleStatus) {
+  function _onMainActiveStatusChange(eToggleIndex, eToggleStatus) {
 
     var path, port;
 
@@ -210,50 +246,9 @@
 
     _interface = new Interface();
 
-    _interface.registerCallback(function($event, eName) {
-      console.log('OSC', eName);
+    _interface.registerCallback(function($event, eMessage) {
+      console.log('OSC EVENT', eMessage);
     });
-
-    // init scene
-
-    _set = DEFAULT_SET_NAME;
-    _scene = DEFAULT_SCENE_NUMBER;
-
-    // keyboard events
-
-    // window.addEventListener('keydown', function($event) {
-
-    //   var data;
-
-    //   if ($event.keyCode >= 48 && $event.keyCode <= 57) {
-
-    //     _scene = $event.keyCode - 48;
-
-    //     _controller.initScene(_set, _scene);
-
-    //     if (_scene > 0) {
-
-    //       data = window.storage.loadSession(_set, _scene);
-
-    //       if (data) {
-
-    //         // load data
-
-    //         data.cells.forEach(function(eItem, eIndex) {
-    //           _mainViewMatrixElem.setCell(eIndex, { status: eItem.active });
-    //           _frequencyMatrixElem.setCell(eIndex, { frequency: eItem.frequency });
-    //           _tresholdMatrixElem.setCell(eIndex, { treshold: eItem.treshold });
-    //         });
-
-    //         //_controller.loadScene(data);
-
-    //       }
-
-    //     }
-
-    //   }
-
-    // });
 
   };
 

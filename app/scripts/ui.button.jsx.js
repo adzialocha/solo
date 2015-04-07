@@ -7,7 +7,7 @@
     getDefaultProps: function() {
       return {
         label: '',
-        color: 'green'
+        color: UI.COLOR.GREEN
       };
     },
 
@@ -34,8 +34,6 @@
         className: 'button' + activeStyle + ' ' + this.props.color,
         onTouchStart: this.onTouchStart,
         onTouchEnd: this.onTouchEnd
-        // onMouseDown: this.onTouchStart,
-        // onMouseUp: this.onTouchEnd
       }, this.props.label);
 
     }

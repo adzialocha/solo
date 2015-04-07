@@ -7,7 +7,7 @@
     getDefaultProps: function() {
       return {
         label: '',
-        color: 'green',
+        color: UI.COLOR.GREEN,
         id: undefined,
         onStatusChange: function() {
           return false;
@@ -53,8 +53,6 @@
         className: 'button toggle' + activeStyle + statusStyle + ' ' + this.state.color,
         onTouchStart: this.onTouchStart,
         onTouchEnd: this.onTouchEnd
-        // onMouseDown: this.onTouchStart,
-        // onMouseUp: this.onTouchEnd
       }, this.state.label);
 
     }

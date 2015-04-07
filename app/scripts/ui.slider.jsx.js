@@ -9,7 +9,7 @@
     getDefaultProps: function() {
       return {
         label: '',
-        color: 'green',
+        color: UI.COLOR.GREEN,
         min: 0,
         max: 100,
         id: undefined,
@@ -67,12 +67,6 @@
       var position, percentage;
       var width, value;
 
-      // if ($event.type === 'mousedown') {
-      //   this._active = true;
-      // } else if ($event.type === 'mouseup') {
-      //   this._active = false;
-      // }
-
       if ($event.touches) {
         position = $event.touches[0].clientX - this.getDOMNode().offsetLeft;
       } else {
@@ -109,13 +103,13 @@
           className: 'slider',
           onTouchStart: this.onValueChange,
           onTouchMove: this.onValueChange
-          // onMouseDown: this.onValueChange,
-          // onMouseMove: this.onValueChange,
-          // onMouseUp: this.onValueChange
         },
         React.DOM.div({ className: 'slider__label' }, this.props.label),
         React.DOM.div({ className: 'slider__value' }, this.state.value),
-        React.DOM.div({ className: 'slider__inner ' + this.props.color, style: sliderInnerStyle })
+        React.DOM.div({
+          className: 'slider__inner ' + this.props.color,
+          style: sliderInnerStyle
+        })
       );
 
     }

@@ -1,6 +1,6 @@
 (function(window, OSC, undefined) {
 
-  var OSC_PATH = '/controls/';
+  var OSC_PATH = '/params/';
 
   var DEFAULT_SERVER_PATH = 'localhost';
   var DEFAULT_SERVER_PORT = 8080;

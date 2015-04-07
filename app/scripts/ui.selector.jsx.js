@@ -7,7 +7,7 @@
     getDefaultProps: function() {
       return {
         label: '',
-        color: 'green',
+        color: UI.COLOR.GREEN,
         id: undefined,
         selectors: [],
         onStatusChange: function() {
