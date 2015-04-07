@@ -1,6 +1,6 @@
 # channel-toggle-interface
 
-Channel-Toggle Matrix Interface and editor for OSC (OpenSoundControl) based on [https://github.com/marmorkuchen-net/osc-js](osc-js) and [https://facebook.github.io/react/](React).
+Channel-Toggle Matrix Interface and editor for OSC (OpenSoundControl) based on [osc-js](https://github.com/marmorkuchen-net/osc-js) and [React](https://facebook.github.io/react/).
 
 You need a running node environment with bower, grunt and npm installed.
 
@@ -15,6 +15,6 @@ Open the browser (tested on google chrome) and go to `localhost:8000`. The appli
 
 ### OSC-Bridge
 
-For OSC-communication with another audio software like `Ableton` you need a websocket-udp bridge. Check the `bridge.py` file, you will need a python environment, [http://autobahn.ws/python/](autobahn) based on twisted.
+For OSC-communication with another audio software like `Ableton` you need a websocket-udp bridge. Check the `bridge.py` file, you will need a python environment, [autobahn](http://autobahn.ws/python/) based on twisted.
 
     python bridge.py
