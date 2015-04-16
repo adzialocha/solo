@@ -1,7 +1,7 @@
 (function(window, $, undefined) {
 
   var TRACK_SOUNDCLOUD_PATH = 'https://soundcloud.com/andreasdzialocha/solo-1-2/s-v2luz';
-  var TRACK_FILE_PATH = '/solo_1_2.json';
+  var TRACK_FILE_PATH = './solo_1_2.json';
   var TRACK_OFFSET = 6395;
 
   var TICK_INTERVAL = 2;
