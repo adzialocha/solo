@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <title>////////////////////////////////</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" type="text/css" href="solo.css">
-    <script src="http://connect.soundcloud.com/sdk.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script type="text/javascript" src="solo.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
+    <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/player.js"></script>
   </head>
   <body>
     <div class="message loading">
@@ -44,7 +46,7 @@
     </div>
     <script type="text/javascript">
       $(document).ready(function() {
-        app.init();
+        solo.app.init();
       });
     </script>
   </body>
