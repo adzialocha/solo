@@ -1,6 +1,15 @@
+/*! solo.andreasdzialocha.com (2015) */
+
+*
+{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 /* reset */
 
-html, body, div, span, iframe, h1, p, img, button
+html, body, div, span, iframe, h1, p, img, button, canvas
 {
   margin: 0;
   padding: 0;
@@ -13,86 +22,183 @@ html, body, div, span, iframe, h1, p, img, button
 body
 {
   line-height: 1;
-  cursor: crosshair;
 }
 
-/* layout */
+/* global */
 
 html, body
 {
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 body
 {
+  color: #fff;
   background-color: #000;
   font-family: "Arial", sans-serif;
-  overflow: hidden;
+  font-size: 12px;
 }
+
+button
+{
+  cursor: pointer;
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px;
+}
+
+button:hover
+{
+  background-color: #fff;
+  color: #000;
+}
+
+a
+{
+  color: #fff;
+  text-decoration: underline;
+}
+
+a:hover
+{
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+}
+
+/* layout */
 
 .wrapper
 {
   height: 100%;
+  cursor: none;
 }
 
-/* loading */
-
-.message
+.wrapper--user-active
 {
-  height: 100%;
+  cursor: crosshair;
+}
+
+/* bar */
+
+.bar
+{
+  position: absolute;
+  bottom: 0;
+
   width: 100%;
-  display: table;
-}
-
-.message h1
-{
-  display: table-cell;
-
-  vertical-align: middle;
-  text-align: center;
-
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.message button
-{
-  display: table-cell;
-
-  vertical-align: middle;
-  text-align: center;
-
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.message.hidden
-{
-  display: none;
-}
-
-/* grid */
-
-.row
-{
-  height: 33.3%;
-}
-
-.cell
-{
-  float: left;
-
-  width: 16.66%;
-  height: 100%;
+  height: 100px;
 
   background-color: #000;
 
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s;
+  -ms-transform: translate3d(0, 100px, 0);
+  -moz-transform: translate3d(0, 100px, 0);
+  -webkit-transform: translate3d(0, 100px, 0);
+  transform: translate3d(0, 100px, 0);
+
+  -webkit-transition: all .55s ease-in-out 0s;
+  transition: all .55s ease-in-out 0s;
+
+  opacity: 0.0;
 }
 
-.cell.active
+.wrapper--user-active .bar, .bar:hover
 {
-  background-color: #fff;
+  -ms-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  opacity: 1.0;
+
+  cursor: crosshair;
+}
+
+/* bar playlist */
+
+.bar__playlist
+{
+  float: left;
+  padding-left: 20px;
+}
+
+button.bar__playlist__button
+{
+  width: 100px;
+  height: 100px;
+  border-right: none;
+  border-bottom: none;
+}
+
+button.bar__playlist__button:last-child
+{
+  border-right: 1px solid #fff;
+}
+
+/* bar credits */
+
+.bar__credits
+{
+  float: right;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  height: 100px;
+  display: table;
+}
+
+.bar__credits__content
+{
+  display: table-cell;
+  vertical-align: bottom;
+}
+
+.bar__credits p
+{
+  line-height: 1.5em;
+}
+
+.bar__credits p, .bar__credits a
+{
+  color: #333;
+  text-transform: uppercase;
+}
+
+/* messages */
+
+.message
+{
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+
+  display: none;
+}
+
+.message.message--visible
+{
+  display: table;
+}
+
+.message__content
+{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.message__content h1, .message__content p
+{
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.message__content h1
+{
+  font-weight: bold;
 }

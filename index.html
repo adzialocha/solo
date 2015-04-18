@@ -2,52 +2,44 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>////////////////////////////////</title>
+    <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" type="text/css" href="styles/app.css">
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
     <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/utils.js"></script>
     <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/scene.js"></script>
+    <script type="text/javascript" src="scripts/view.js"></script>
     <script type="text/javascript" src="scripts/player.js"></script>
   </head>
   <body>
-    <div class="message loading">
-      <h1>Loading...</h1>
-    </div>
-    <div class="message play">
-      <h1>Play</h1>
-    </div>
     <div class="wrapper">
-      <div class="row">
-        <div class="cell" id="param1"></div>
-        <div class="cell" id="param4"></div>
-        <div class="cell" id="param7"></div>
-        <div class="cell" id="param10"></div>
-        <div class="cell" id="param13"></div>
-        <div class="cell" id="param16"></div>
+      <div class="message" id="message-loading">
+        <div class="message__content">
+          <h1>Loading...</h1>
+        </div>
       </div>
-      <div class="row">
-        <div class="cell" id="param2"></div>
-        <div class="cell" id="param5"></div>
-        <div class="cell" id="param8"></div>
-        <div class="cell" id="param11"></div>
-        <div class="cell" id="param14"></div>
-        <div class="cell" id="param17"></div>
+      <div class="message" id="message-play">
+        <div class="message__content">
+          <button id="message-play-button">Play</button>
+        </div>
       </div>
-      <div class="row">
-        <div class="cell" id="param3"></div>
-        <div class="cell" id="param6"></div>
-        <div class="cell" id="param9"></div>
-        <div class="cell" id="param12"></div>
-        <div class="cell" id="param15"></div>
-        <div class="cell" id="param18"></div>
+      <canvas id="view"></canvas>
+      <div class="bar">
+        <div class="bar__playlist"></div>
+        <div class="bar__credits">
+          <div class="bar__credits__content">
+            <p>2015</p>
+            <p><a href="http://www.slipdiscs.co.uk/" target="_blank">slipdiscs.co.uk</a></p>
+            <p><a href="http://www.andreasdzialocha.com/" target="_blank">andreasdzialocha.com</a></p>
+          </div>
+        </div>
       </div>
     </div>
     <script type="text/javascript">
-      $(document).ready(function() {
-        solo.app.init();
-      });
+      $(document).ready(solo.app.init);
     </script>
   </body>
 </html>

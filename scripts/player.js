@@ -1,6 +1,6 @@
 /*! solo.andreasdzialocha.com (2015) */
 
-(function(window, solo, SC, undefined) {
+(function(window, SC, undefined) {
 
   'use strict';
 
@@ -12,23 +12,24 @@
 
   var SUB_TICK_INTERVAL = 2; // ms
 
-  // initalize
+  var SOUNDCLOUD_CLIENT_ID = 'YOUR_CLIENT_ID';
 
-  SC.initialize({
-    client_id: 'YOUR_CLIENT_ID'
-  });
+  var ON_PARAMETER_EVENT = 'onParameterEvent';
+  var ON_TRACK_FINISHED = 'onTrackFinished';
 
   // private
 
-  var _callback;
+  var _callbacks = {};
 
   var _data, _index;
+
+  var _track;
 
   var _timeout, _position, _offset;
 
   function _call(pParamId, pParamStatus) {
-    if (_callback) {
-      _callback(pParamId, pParamStatus);
+    if (_callbacks[ON_PARAMETER_EVENT]) {
+      _callbacks[ON_PARAMETER_EVENT](pParamId, pParamStatus);
     }
   }
 
@@ -72,7 +73,6 @@
 
     _offset = 0;
     _subtick(_position);
-
   }
 
   // setup track
@@ -97,26 +97,46 @@
       return eItemA.c - eItemB.c;
     });
 
-    converted = pTrackData;
-    converted.params = params;
+    converted = {
+      title: pTrackData.title,
+      offset: pTrackData.offset,
+      soundcloud_path: pTrackData.soundcloud_path,
+      params: params
+    };
 
     return converted;
 
   }
 
-  function _play() {
+  function _play(pStartCallback) {
 
     _offset = 0;
     _index = 0;
 
+    if (_timeout) {
+      window.clearTimeout(_timeout);
+    }
+
     SC.get('/resolve', { url: _data.soundcloud_path }, function(sTrackData) {
       SC.stream(sTrackData.uri, function(sTrack) {
-        sTrack.play({
-          onplay: function() {},
-          whileplaying: function() {
-            _tick(sTrack.position + _data.offset);
+        _track = sTrack;
+        _track.play({
+          onplay: function() {
+            if (pStartCallback && typeof pStartCallback === 'function') {
+              pStartCallback();
+            }
           },
-          onfinish: function() {}
+          whileplaying: function() {
+            _tick(_track.position + _data.offset);
+          },
+          onfinish: function() {
+            if (_timeout) {
+              window.clearTimeout(_timeout);
+            }
+            if (_callbacks[ON_TRACK_FINISHED]) {
+              _callbacks[ON_TRACK_FINISHED]();
+            }
+          }
         });
       });
     });
@@ -127,25 +147,39 @@
 
   var player = {};
 
-  player.onTrackEvent = function(pCallback) {
+  player.init = function() {
+    SC.initialize({
+      client_id: SOUNDCLOUD_CLIENT_ID
+    });
+  };
 
+  player.onTrackEvent = function(pCallback) {
     if (! pCallback || typeof pCallback != 'function') {
       return false;
     }
+    _callbacks[ON_PARAMETER_EVENT] = pCallback;
+  };
 
-    _callback = pCallback;
+  player.onTrackFinished = function(pCallback) {
+    if (! pCallback || typeof pCallback != 'function') {
+      return false;
+    }
+    _callbacks[ON_TRACK_FINISHED] = pCallback;
+  };
 
-  }
-
-  player.start = function(pTrackData) {
+  player.start = function(pTrackData, pStartCallback) {
 
     if (! pTrackData || typeof pTrackData !== 'object') {
       return false;
     }
 
+    if (_track) {
+      _track.stop();
+    }
+
     _data = _convert(pTrackData);
 
-    _play();
+    _play(pStartCallback);
 
     return true;
 
@@ -153,4 +187,4 @@
 
   window.solo.player = player;
 
-})(window, window.solo, window.SC);
+})(window, window.SC);
