@@ -61,7 +61,7 @@
 
   function _next(sStartCallback) {
     _current++;
-    if (_current >= TRACK_FILE_PATHS.length) {
+    if (_current >= PLAYLIST.length) {
       _current = 0;
     }
     _play(_current, sStartCallback);
