@@ -67,7 +67,7 @@
 
     var size, color;
 
-    if (_index < STEPS) {
+    if (_index > STEPS) {
       _index = 0;
     }
 
