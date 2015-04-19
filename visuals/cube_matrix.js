@@ -10,7 +10,7 @@
 
   // constants
 
-  var SCENE_TITLE = 'SOLO_1';
+  var SCENE_TITLE = 'CUBE_MATRIX';
   var COLUMNS = 6;
   var ROWS = 3;
 
@@ -61,8 +61,6 @@
 
   };
 
-  // scene.onTrackInitalized = function() {};
-
   scene.onTrackEvent = function(sParamId, sParamStatus) {
 
     if (sParamStatus) {
@@ -75,6 +73,7 @@
 
   };
 
+  // scene.onTrackInitalized = function() {};
   // scene.onTrackFinished = function() {};
 
   // register it

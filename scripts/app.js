@@ -15,8 +15,13 @@
   var DEFAULT_TRACK_NUMBER = 0;
 
   var PLAYLIST = [
-    { title: '1', data: './data/solo_1_2.json', scene: './visuals/scene_1.js' },
-    { title: '6', data: './data/solo_6.json',   scene: './visuals/scene_6.js' }
+    { title: '1', data: './data/SOLO_1.json', scene: './visuals/cube_matrix.js' },
+    { title: '2', data: './data/SOLO_2.json', scene: './visuals/cube_matrix.js' },
+    { title: '3', data: './data/SOLO_3.json', scene: './visuals/lines.js' },
+    { title: '4', data: './data/SOLO_4.json', scene: './visuals/full.js' },
+    { title: '5', data: './data/SOLO_5.json', scene: './visuals/grayscale_cube.js' },
+    { title: '6', data: './data/SOLO_6.json', scene: './visuals/cube_matrix.js' },
+    { title: '7', data: './data/SOLO_7.json', scene: './visuals/cube_matrix.js' }
   ];
 
   // private

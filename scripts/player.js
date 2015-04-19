@@ -31,8 +31,6 @@
     }
   }
 
-  // play runtime
-
   function _next(pPosition) {
 
     var i, found;
@@ -47,39 +45,6 @@
         found = true;
       }
     }
-
-  }
-
-  // setup track
-
-  function _convert(pTrackData) {
-
-    var converted, params;
-
-    params = [];
-
-    Object.keys(pTrackData.params).forEach(function(eKey) {
-      pTrackData.params[eKey].forEach(function(eItem) {
-        params.push({
-          c: eItem.c,
-          id: parseInt(eKey, 10),
-          s: eItem.s
-        });
-      });
-    });
-
-    params = params.sort(function(eItemA, eItemB) {
-      return eItemA.c - eItemB.c;
-    });
-
-    converted = {
-      title: pTrackData.title,
-      offset: pTrackData.offset,
-      soundcloud_path: pTrackData.soundcloud_path,
-      params: params
-    };
-
-    return converted;
 
   }
 
@@ -103,7 +68,7 @@
           },
 
           whileplaying: function() {
-            _next(_track.position + _data.offset);
+            _next(_track.position);
           },
 
           onfinish: function() {
@@ -152,7 +117,7 @@
       _track.stop();
     }
 
-    _data = _convert(pTrackData);
+    _data = pTrackData;
 
     _play(pStartCallback);
 

@@ -10,9 +10,8 @@
 
   // constants
 
-  var SCENE_TITLE = 'SOLO_6';
+  var SCENE_TITLE = 'GRAYSCALE_CUBE';
 
-  var BLACK = '#000';
   var STEPS = 100;
 
   // private
@@ -48,7 +47,6 @@
       rect = new fabric.Rect({
         left: 0,
         top: 0,
-        fill: BLACK,
         width: _width,
         height: _height
       });
@@ -60,8 +58,6 @@
     }
 
   };
-
-  // scene.onTrackInitalized = function() {};
 
   scene.onTrackEvent = function(sParamId, sParamStatus) {
 
@@ -90,6 +86,7 @@
 
   };
 
+  // scene.onTrackInitalized = function() {};
   // scene.onTrackFinished = function() {};
 
   // register it

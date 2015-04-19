@@ -40,7 +40,7 @@
 
   // private
 
-  var _current;
+  var _current, _params;
 
   // public
 
@@ -59,6 +59,7 @@
 
   scene._onTrackEvent = function(sParamId, sParamStatus, sPosition) {
     if (_current) {
+      _current.params[sParamId] = (sParamStatus === 1);
       _current.onTrackEvent(sParamId, sParamStatus, sPosition);
     }
   };
@@ -82,9 +83,17 @@
 
   function Scene(sTitle) {
 
+    var _this = this;
+
     this.title = sTitle;
 
     this.PARAMETERS = PARAMETERS;
+
+    this.params = [];
+
+    PARAMETERS.forEach(function() {
+      _this.params.push(false);
+    });
 
     this.canvas = window.solo.view.getCanvas();
 
