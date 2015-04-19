@@ -11,6 +11,7 @@
   // constants
 
   var SCENE_TITLE = 'CUBE_MATRIX';
+
   var COLUMNS = 6;
   var ROWS = 3;
 

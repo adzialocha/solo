@@ -10,13 +10,16 @@
 
   // constants
 
-  var SCENE_TITLE = 'LINES';
+  var SCENE_TITLE = 'GRID';
 
+  var BLACK = '#000';
   var WHITE = '#fff';
+
+  var LINE_SIZE = 15;
 
   // private
 
-  var _width, _height, _params, _lines;
+  var _width, _height, _lines;
 
   // scene
 
@@ -28,20 +31,21 @@
 
     this.canvas.clear();
 
-    _lines = [];
-
     _width = this.canvas.getWidth();
     _height = this.canvas.getHeight();
 
-    for (i = 0; i < Math.round(this.params.length / 2); i++) {
+    _lines = [];
+
+    for (i = 0; i < _width; i = i + LINE_SIZE) {
 
       line = new fabric.Line(
-        [0, 0, _width, _height],
+        [i, 0, i, _height],
         {
-          fill: WHITE,
-          stroke: WHITE,
-          strokeWidth: 100,
-        });
+          fill: BLACK,
+          stroke: BLACK,
+          strokeWidth: LINE_SIZE,
+        }
+      );
 
       _lines.push(line);
 
@@ -53,30 +57,18 @@
 
   scene.onTrackEvent = function(sParamId, sParamStatus) {
 
-    var i, points, count, pre;
+    var index, color, position;
 
-    count = this.params.length;
+    index = Math.floor(Math.random() * _lines.length);
+    color = sParamStatus? WHITE : BLACK;
+    position = Math.round(Math.random() * _width);
 
-    points = [];
-
-    this.params.forEach(function(eStatus, eId) {
-      if (eStatus) {
-        points.push({ x: Math.random() * _width, y: Math.random() * _height });
-      } else {
-        points.push({ x: 0, y: 0 });
-      }
+    _lines[index].set({
+      fill: color,
+      stroke: color,
+      x1: position,
+      x2: position
     });
-
-    for (i = 0; i < _lines.length; i = i + 1) {
-
-      _lines[i].set({
-        x1: points[i].x,
-        y1: points[i].y,
-        x2: points[i + 1].x,
-        y2: points[i + 1].y
-      });
-
-    }
 
     this.canvas.renderAll();
 

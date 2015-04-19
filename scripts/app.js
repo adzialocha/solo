@@ -17,10 +17,10 @@
   var PLAYLIST = [
     { title: '1', data: './data/SOLO_1.json', scene: './visuals/cube_matrix.js' },
     { title: '2', data: './data/SOLO_2.json', scene: './visuals/cube_matrix.js' },
-    { title: '3', data: './data/SOLO_3.json', scene: './visuals/lines.js' },
+    { title: '3', data: './data/SOLO_3.json', scene: './visuals/grid.js' },
     { title: '4', data: './data/SOLO_4.json', scene: './visuals/full.js' },
     { title: '5', data: './data/SOLO_5.json', scene: './visuals/grayscale_cube.js' },
-    { title: '6', data: './data/SOLO_6.json', scene: './visuals/cube_matrix.js' },
+    { title: '6', data: './data/SOLO_6.json', scene: './visuals/lines.js' },
     { title: '7', data: './data/SOLO_7.json', scene: './visuals/cube_matrix.js' }
   ];
 
