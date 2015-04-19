@@ -10,7 +10,7 @@
 
   // constants
 
-  var SUB_TICK_INTERVAL = 2; // ms
+  var UPDATE_POSITION_INTERVAL = 2; // ms
 
   var SOUNDCLOUD_CLIENT_ID = 'YOUR_CLIENT_ID';
 
@@ -25,11 +25,9 @@
 
   var _track;
 
-  var _timeout, _position, _offset;
-
-  function _call(pParamId, pParamStatus) {
+  function _call(pParamId, pParamStatus, pPosition) {
     if (_callbacks[ON_PARAMETER_EVENT]) {
-      _callbacks[ON_PARAMETER_EVENT](pParamId, pParamStatus);
+      _callbacks[ON_PARAMETER_EVENT](pParamId, pParamStatus, pPosition);
     }
   }
 
@@ -43,36 +41,13 @@
 
     for (i = _index; i < _data.params.length && ! found; i++) {
       if (_data.params[i].c <= pPosition) {
-        _call(_data.params[i].id, _data.params[i].s);
+        _call(_data.params[i].id, _data.params[i].s, pPosition);
         _index++;
       } else {
         found = true;
       }
     }
 
-  }
-
-  function _subtick(pPosition) {
-
-    _next(pPosition);
-
-    _timeout = window.setTimeout(function() {
-      _offset = _offset + SUB_TICK_INTERVAL;
-      _subtick(_position + _offset);
-    }, SUB_TICK_INTERVAL);
-
-  }
-
-  function _tick(pPosition) {
-
-    _position = pPosition;
-
-    if (_timeout) {
-      window.clearTimeout(_timeout);
-    }
-
-    _offset = 0;
-    _subtick(_position);
   }
 
   // setup track
@@ -110,33 +85,33 @@
 
   function _play(pStartCallback) {
 
-    _offset = 0;
     _index = 0;
-
-    if (_timeout) {
-      window.clearTimeout(_timeout);
-    }
 
     SC.get('/resolve', { url: _data.soundcloud_path }, function(sTrackData) {
       SC.stream(sTrackData.uri, function(sTrack) {
         _track = sTrack;
         _track.play({
+
+          preferFlash: false,
+          flashPollingInterval: UPDATE_POSITION_INTERVAL,
+          html5PollingInterval: UPDATE_POSITION_INTERVAL,
+
           onplay: function() {
             if (pStartCallback && typeof pStartCallback === 'function') {
               pStartCallback();
             }
           },
+
           whileplaying: function() {
-            _tick(_track.position + _data.offset);
+            _next(_track.position + _data.offset);
           },
+
           onfinish: function() {
-            if (_timeout) {
-              window.clearTimeout(_timeout);
-            }
             if (_callbacks[ON_TRACK_FINISHED]) {
               _callbacks[ON_TRACK_FINISHED]();
             }
           }
+
         });
       });
     });

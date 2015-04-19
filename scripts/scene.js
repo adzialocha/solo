@@ -57,9 +57,9 @@
     }
   };
 
-  scene._onTrackEvent = function(sParamId, sParamStatus) {
+  scene._onTrackEvent = function(sParamId, sParamStatus, sPosition) {
     if (_current) {
-      _current.onTrackEvent(sParamId, sParamStatus);
+      _current.onTrackEvent(sParamId, sParamStatus, sPosition);
     }
   };
 

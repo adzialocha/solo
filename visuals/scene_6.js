@@ -67,8 +67,8 @@
 
     var size, color;
 
-    if (_index > STEPS) {
-      _index = 0;
+    if (_index < STEPS) {
+      _index = STEPS;
     }
 
     size = Math.ceil((_index / STEPS) * _width);
