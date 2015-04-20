@@ -28,7 +28,9 @@
 
   function _requestFullscreen(sElement) {
     var requestMethod = sElement.requestFullScreen || sElement.webkitRequestFullScreen || sElement.mozRequestFullScreen || sElement.msRequestFullscreen;
-    requestMethod.call(sElement);
+    if (requestMethod) {
+      requestMethod.call(sElement);
+    }
   }
 
   function _load(sTrackNumber, sStartCallback) {
