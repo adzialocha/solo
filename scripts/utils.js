@@ -14,6 +14,8 @@
     return $.ajax(options);
   };
 
+  window.isIOS = window.navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false;
+
   window.noop = function() {};
 
 })(window, jQuery);

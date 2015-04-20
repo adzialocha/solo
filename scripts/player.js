@@ -18,8 +18,6 @@
   var ON_TRACK_FINISHED = 'onTrackFinished';
   var ON_TRACK_STOPPED = 'onTrackStopped';
 
-  var STATE_PLAYING = 1;
-
   // private
 
   var _callbacks = {};
@@ -51,41 +49,47 @@
 
   }
 
-  function _play(pStartCallback) {
+  function _play(sTrack, pStartCallback) {
 
     _index = 0;
+    _track = sTrack;
+
+    _track.play({
+
+      flashPollingInterval: UPDATE_POSITION_INTERVAL,
+      html5PollingInterval: UPDATE_POSITION_INTERVAL,
+
+      onplay: function() {
+        if (pStartCallback) {
+          pStartCallback();
+        }
+      },
+
+      whileplaying: function() {
+        _next(_track.position);
+      },
+
+      onfinish: function() {
+        if (_callbacks[ON_TRACK_FINISHED]) {
+          _callbacks[ON_TRACK_FINISHED]();
+        }
+      },
+
+      onstop: function() {
+        if (_callbacks[ON_TRACK_STOPPED]) {
+          _callbacks[ON_TRACK_STOPPED]();
+        }
+      }
+
+    });
+
+  }
+
+  function _load(pStartCallback) {
 
     SC.get('/resolve', { url: _data.soundcloud_path }, function(sTrackData) {
       SC.stream(sTrackData.uri, function(sTrack) {
-        _track = sTrack;
-        _track.play({
-
-          flashPollingInterval: UPDATE_POSITION_INTERVAL,
-          html5PollingInterval: UPDATE_POSITION_INTERVAL,
-
-          onplay: function() {
-            if (pStartCallback) {
-              pStartCallback();
-            }
-          },
-
-          whileplaying: function() {
-            _next(_track.position);
-          },
-
-          onfinish: function() {
-            if (_callbacks[ON_TRACK_FINISHED]) {
-              _callbacks[ON_TRACK_FINISHED]();
-            }
-          },
-
-          onstop: function() {
-            if (_callbacks[ON_TRACK_STOPPED]) {
-              _callbacks[ON_TRACK_STOPPED]();
-            }
-          }
-
-        });
+        _play(sTrack, pStartCallback);
       });
     });
 
@@ -138,7 +142,7 @@
 
     _data = pTrackData;
 
-    _play(pStartCallback);
+    _load(pStartCallback);
 
     return true;
 
