@@ -1,4 +1,4 @@
-(function(window, solo, fabric) {
+(function(window, fabric) {
 
   'use strict';
 
@@ -48,4 +48,4 @@
 
   window.solo.view = view;
 
-})(window, window.solo, window.fabric);
+})(window, window.fabric);

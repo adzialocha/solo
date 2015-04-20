@@ -16,6 +16,9 @@
 
   var ON_PARAMETER_EVENT = 'onParameterEvent';
   var ON_TRACK_FINISHED = 'onTrackFinished';
+  var ON_TRACK_STOPPED = 'onTrackStopped';
+
+  var STATE_PLAYING = 1;
 
   // private
 
@@ -57,12 +60,11 @@
         _track = sTrack;
         _track.play({
 
-          preferFlash: false,
           flashPollingInterval: UPDATE_POSITION_INTERVAL,
           html5PollingInterval: UPDATE_POSITION_INTERVAL,
 
           onplay: function() {
-            if (pStartCallback && typeof pStartCallback === 'function') {
+            if (pStartCallback) {
               pStartCallback();
             }
           },
@@ -74,6 +76,12 @@
           onfinish: function() {
             if (_callbacks[ON_TRACK_FINISHED]) {
               _callbacks[ON_TRACK_FINISHED]();
+            }
+          },
+
+          onstop: function() {
+            if (_callbacks[ON_TRACK_STOPPED]) {
+              _callbacks[ON_TRACK_STOPPED]();
             }
           }
 
@@ -107,9 +115,20 @@
     _callbacks[ON_TRACK_FINISHED] = pCallback;
   };
 
+  player.onTrackStopped = function(pCallback) {
+    if (! pCallback || typeof pCallback != 'function') {
+      return false;
+    }
+    _callbacks[ON_TRACK_STOPPED] = pCallback;
+  };
+
   player.start = function(pTrackData, pStartCallback) {
 
     if (! pTrackData || typeof pTrackData !== 'object') {
+      return false;
+    }
+
+    if (pStartCallback && typeof pStartCallback != 'function') {
       return false;
     }
 

@@ -7,6 +7,11 @@
   box-sizing: border-box;
 }
 
+*:focus
+{
+  outline: none;
+}
+
 /* reset */
 
 html, body, div, span, iframe, h1, p, img, button, canvas
@@ -135,6 +140,11 @@ button.bar__playlist__button
 button.bar__playlist__button:last-child
 {
   border-right: 1px solid #fff;
+}
+
+button.bar__playlist__button--selected
+{
+  background-color: #666;
 }
 
 /* bar credits */

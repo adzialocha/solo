@@ -26,16 +26,12 @@
 
   // private
 
-  var _current, _timeout;
-
   function _requestFullscreen(sElement) {
     var requestMethod = sElement.requestFullScreen || sElement.webkitRequestFullScreen || sElement.mozRequestFullScreen || sElement.msRequestFullscreen;
     requestMethod.call(sElement);
   }
 
-  function _play(sTrackNumber, sStartCallback) {
-
-    _current = sTrackNumber;
+  function _load(sTrackNumber, sStartCallback) {
 
     // load scene
 
@@ -64,25 +60,17 @@
 
   }
 
-  function _next(sStartCallback) {
-    _current++;
-    if (_current >= PLAYLIST.length) {
-      _current = 0;
-    }
-    _play(_current, sStartCallback);
-  }
-
   // public
 
   var app = {};
 
   app.init = function() {
 
-    var elem;
+    var elem, timeout, current;
 
     // initalize app
 
-    _current = DEFAULT_TRACK_NUMBER;
+    current = DEFAULT_TRACK_NUMBER;
 
     // initalize player
 
@@ -95,20 +83,49 @@
     });
 
     window.solo.player.onTrackFinished(function() {
-
       window.solo.scene._onTrackFinished();
+      next();
+    });
 
-      $('#message-loading').addClass('message--visible');
-
-      _next(function() {
-        $('#message-loading').removeClass('message--visible');
-      });
-
+    window.solo.player.onTrackStopped(function() {
+      window.solo.scene._onTrackFinished();
     });
 
     // initalize view
 
     window.solo.view.init();
+
+    // start track
+
+    function next() {
+
+      current++;
+
+      if (current >= PLAYLIST.length) {
+        current = 0;
+      }
+
+      play(current);
+
+    }
+
+    function play(eIndex) {
+
+      current = eIndex;
+
+      _requestFullscreen(window.document.body);
+
+      $('.bar__playlist__button').removeClass('bar__playlist__button--selected');
+      $('.bar__playlist__button:nth-child(' + (eIndex + 1) + ')').addClass('bar__playlist__button--selected');
+
+      $('#message-play').removeClass('message--visible');
+      $('#message-loading').addClass('message--visible');
+
+      _load(eIndex, function() {
+        $('#message-loading').removeClass('message--visible');
+      });
+
+    }
 
     // user interaction
 
@@ -116,11 +133,11 @@
 
       $('.wrapper').addClass('wrapper--user-active');
 
-      if (_timeout) {
-        window.clearTimeout(_timeout);
+      if (timeout) {
+        window.clearTimeout(timeout);
       }
 
-      _timeout = window.setTimeout(function() {
+      timeout = window.setTimeout(function() {
         $('.wrapper').removeClass('wrapper--user-active');
       }, WAIT_UNTIL_BAR_DISAPPEARS);
 
@@ -129,16 +146,7 @@
     $('#message-play').addClass('message--visible');
 
     $('#message-play-button').on('click', function() {
-
-      _requestFullscreen(window.document.body);
-
-      $('#message-play').removeClass('message--visible');
-      $('#message-loading').addClass('message--visible');
-
-      _play(_current, function() {
-        $('#message-loading').removeClass('message--visible');
-      });
-
+      play(current);
     });
 
     PLAYLIST.forEach(function(eItem, eIndex) {
@@ -148,11 +156,7 @@
       elem.addClass('bar__playlist__button');
 
       elem.on('click', function() {
-        $('#message-play').removeClass('message--visible');
-        $('#message-loading').addClass('message--visible');
-        _play(eIndex, function() {
-          $('#message-loading').removeClass('message--visible');
-        });
+        play(eIndex);
       });
 
       $('.bar__playlist').append(elem);
