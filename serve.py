@@ -9,7 +9,7 @@ from autobahn.twisted.resource import HTTPChannelHixie76Aware
 
 # constants
 
-SERVER_HTTP_PORT = 9000
+SERVER_HTTP_PORT = 9001
 SERVER_HTTP_RESOURCES = '.'
 
 if __name__ == '__main__':

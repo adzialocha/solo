@@ -14,6 +14,11 @@
 
   var DEFAULT_TRACK_NUMBER = 0;
 
+  var LIVE_WEBSOCKET_SERVER = 'localhost';
+  var LIVE_WEBSOCKET_PORT = 8000;
+
+  var OSC_LIB_PATH = './lib/osc.min.js';
+
   var PLAYLIST = [
     { title: '1', data: './data/SOLO_1.json', scene: './visuals/cube_matrix.js' },
     { title: '2', data: './data/SOLO_2.json', scene: './visuals/cube_matrix.js' },
@@ -22,6 +27,11 @@
     { title: '5', data: './data/SOLO_5.json', scene: './visuals/grayscale_cube.js' },
     { title: '6', data: './data/SOLO_6.json', scene: './visuals/lines.js' },
     { title: '7', data: './data/SOLO_7.json', scene: './visuals/cube_matrix.js' }
+  ];
+
+  var LIVE_PLAYLIST = [
+    { title: '1', scene: './visuals/cube_matrix.js' },
+    { title: '2', scene: './visuals/full.js' }
   ];
 
   // private
@@ -33,31 +43,50 @@
     }
   }
 
-  function _load(sTrackNumber, sStartCallback) {
+  function _load(sTrackNumber, sStartCallback, sIsLive) {
+
+    var path;
 
     // load scene
+
+    path = sIsLive? LIVE_PLAYLIST[sTrackNumber] : PLAYLIST[sTrackNumber];
 
     $.cachedScript(PLAYLIST[sTrackNumber].scene, {
       success: function() {
 
-        // load track data
+        if (sIsLive) {
 
-        $.ajax({
-          method: 'GET',
-          url: PLAYLIST[sTrackNumber].data,
-          dataType: 'json',
-          cache: true,
-          success: function(rData) {
-            window.solo.player.start(rData, function() {
-              window.solo.scene._onTrackInitalized();
-              if (sStartCallback && typeof sStartCallback === 'function') {
-                sStartCallback();
-              }
-            });
+          // load scene for live performance
+
+          window.solo.scene._onTrackInitalized();
+
+          if (sStartCallback && typeof sStartCallback === 'function') {
+            sStartCallback();
           }
-        });
+
+        } else {
+
+          // load track data
+
+          $.ajax({
+            method: 'GET',
+            url: PLAYLIST[sTrackNumber].data,
+            dataType: 'json',
+            cache: true,
+            success: function(rData) {
+              window.solo.player.start(rData, function() {
+                window.solo.scene._onTrackInitalized();
+                if (sStartCallback && typeof sStartCallback === 'function') {
+                  sStartCallback();
+                }
+              });
+            }
+          });
+
+        }
 
       }
+
     });
 
   }
@@ -163,6 +192,45 @@
 
       $('.bar__playlist').append(elem);
 
+    });
+
+  };
+
+  app.live = function() {
+
+    var ready, osc;
+
+    // initalize view
+
+    window.solo.view.init();
+
+    // get osc functionality
+
+    $.cachedScript(OSC_LIB_PATH, {
+      success: function() {
+
+        osc = new OSC();
+        osc.connect(LIVE_WEBSOCKET_SERVER, LIVE_WEBSOCKET_PORT);
+
+        ready = false;
+
+        // listen
+
+        osc.on('/scene', function(rMessage) {
+          ready = false;
+          window.solo.scene._onTrackFinished();
+          _load(rMessage.args[0], function() {
+            ready = true;
+          }, true);
+        });
+
+        osc.on('/param', function(rMessage) {
+          if (ready) {
+            window.solo.scene._onTrackEvent(rMessage.args[0], rMessage.args[1]);
+          }
+        });
+
+      }
     });
 
   };
