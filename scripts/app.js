@@ -209,8 +209,10 @@
     $.cachedScript(OSC_LIB_PATH, {
       success: function() {
 
+        var server_path = prompt("OSC SERVER HOST", LIVE_WEBSOCKET_SERVER);
+
         osc = new OSC();
-        osc.connect(LIVE_WEBSOCKET_SERVER, LIVE_WEBSOCKET_PORT);
+        osc.connect((server_path || LIVE_WEBSOCKET_SERVER), LIVE_WEBSOCKET_PORT);
 
         ready = false;
 
