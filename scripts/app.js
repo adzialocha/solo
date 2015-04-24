@@ -17,7 +17,7 @@
   var LIVE_WEBSOCKET_SERVER = 'localhost';
   var LIVE_WEBSOCKET_PORT = 8000;
 
-  var OSC_LIB_PATH = './lib/osc.min.js';
+  var OSC_LIB_PATH = './scripts/lib/osc.min.js';
 
   var PLAYLIST = [
     { title: '1', data: './data/SOLO_1.json', scene: './visuals/cube_matrix.js' },
@@ -31,7 +31,11 @@
 
   var LIVE_PLAYLIST = [
     { title: '1', scene: './visuals/cube_matrix.js' },
-    { title: '2', scene: './visuals/full.js' }
+    { title: '2', scene: './visuals/grid.js' },
+    { title: '3', scene: './visuals/full.js' },
+    { title: '4', scene: './visuals/grayscale_cube.js' },
+    { title: '5_1', scene: './visuals/lines.js' },
+    { title: '5_2', scene: './visuals/cube_matrix.js' }
   ];
 
   // private
@@ -207,9 +211,10 @@
     // get osc functionality
 
     $.cachedScript(OSC_LIB_PATH, {
+
       success: function() {
 
-        var server_path = prompt("OSC SERVER HOST", LIVE_WEBSOCKET_SERVER);
+        var server_path = window.prompt('OSC SERVER HOST', LIVE_WEBSOCKET_SERVER);
 
         osc = new OSC();
         osc.connect((server_path || LIVE_WEBSOCKET_SERVER), LIVE_WEBSOCKET_PORT);
@@ -233,6 +238,7 @@
         });
 
       }
+
     });
 
   };
