@@ -1,3 +1,5 @@
+/*! solo.andreasdzialocha.com (2015) */
+
 (function(window, fabric) {
 
   'use strict';
