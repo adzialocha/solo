@@ -17,13 +17,10 @@ upstart publishing platform BLATT 3000.
 'Solo' is available in a limited tape run, housed in a filter-foam case
 designed by Susie Whaites, and accompanied by a tracing-paper poster and
 insert artwork by Rian Treanor.
-
-'Solo' [SLP016] interactive website: solo.andreasdzialocha.com
-
-www.andreasdzialocha.com
-www.slipimprint.co.uk
-
-Andreas Dzialocha - Solo [SLP016]
-Released: September 2015
-
 ```
+
+[www.andreasdzialocha.com](http://www.andreasdzialocha.com/)    
+[www.slipimprint.co.uk](http://www.slipimprint.co.uk/)
+
+Andreas Dzialocha - Solo [SLP016]    
+Released: September 2015
