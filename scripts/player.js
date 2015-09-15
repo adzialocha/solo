@@ -12,7 +12,7 @@
 
   var UPDATE_POSITION_INTERVAL = 2; // ms
 
-  var SOUNDCLOUD_CLIENT_ID = 'YOUR_CLIENT_ID';
+  var SOUNDCLOUD_CLIENT_ID = '8b1f68f4e89cc82a596754f6a0ecab65';
 
   var ON_PARAMETER_EVENT = 'onParameterEvent';
   var ON_TRACK_FINISHED = 'onTrackFinished';
