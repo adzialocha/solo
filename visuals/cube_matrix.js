@@ -64,13 +64,17 @@
 
   scene.onTrackEvent = function(sParamId, sParamStatus) {
 
-    if (sParamStatus) {
-      _rects[sParamId].set('fill', WHITE);
-    } else {
-      _rects[sParamId].set('fill', BLACK);
-    }
+    if (sParamId in _rects) {
 
-    this.canvas.renderAll();
+      if (sParamStatus) {
+        _rects[sParamId].set('fill', WHITE);
+      } else {
+        _rects[sParamId].set('fill', BLACK);
+      }
+
+      this.canvas.renderAll();
+
+    }
 
   };
 

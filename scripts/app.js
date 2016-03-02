@@ -101,7 +101,7 @@
 
   app.init = function() {
 
-    var elem, timeout, current;
+    var elem, timeout, current, started;
 
     // initalize app
 
@@ -145,6 +145,12 @@
     }
 
     function play(eIndex) {
+
+      if (started && current === eIndex) {
+        return false;
+      }
+
+      started = true;
 
       current = eIndex;
 

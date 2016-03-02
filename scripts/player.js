@@ -10,7 +10,7 @@
 
   // constants
 
-  var UPDATE_POSITION_INTERVAL = 2; // ms
+  var UPDATE_POSITION_INTERVAL = 5; // ms
 
   var SOUNDCLOUD_CLIENT_ID = '8b1f68f4e89cc82a596754f6a0ecab65';
 
@@ -36,6 +36,10 @@
 
     var i, found;
 
+    if (_track && _track.playState === 0) {
+      return false;
+    }
+
     // find next events
 
     for (i = _index; i < _data.params.length && ! found; i++) {
@@ -52,12 +56,10 @@
   function _play(sTrack, pStartCallback) {
 
     _index = 0;
-    _track = sTrack;
 
-    _track.play({
+    _track = soundManager.createSound({
 
-      flashPollingInterval: UPDATE_POSITION_INTERVAL,
-      html5PollingInterval: UPDATE_POSITION_INTERVAL,
+      url: sTrack,
 
       onplay: function() {
         if (pStartCallback) {
@@ -83,15 +85,27 @@
 
     });
 
+    _track.play();
+
   }
 
   function _load(pStartCallback) {
 
-    SC.get('/resolve', { url: _data.soundcloud_path }, function(sTrackData) {
-      SC.stream(sTrackData.uri, function(sTrack) {
-        _play(sTrack, pStartCallback);
-      });
-    });
+    $.ajax({
+
+      url: 'https://api.soundcloud.com/resolve.json',
+      dataType: 'jsonp',
+
+      data: {
+        url: _data.soundcloud_path,
+        client_id: SOUNDCLOUD_CLIENT_ID
+      },
+
+      success: function(sTrack) {
+        _play(sTrack.stream_url + (sTrack.stream_url.indexOf('?') > -1 ? '&' : '?') + 'client_id=' + SOUNDCLOUD_CLIENT_ID, pStartCallback);
+      }
+
+    })
 
   }
 
@@ -100,9 +114,16 @@
   var player = {};
 
   player.init = function() {
-    SC.initialize({
-      client_id: SOUNDCLOUD_CLIENT_ID
+
+    soundManager.setup({
+
+      debugMode: false,
+      forceUseGlobalHTML5Audio: true,
+      html5PollingInterval: UPDATE_POSITION_INTERVAL,
+      preferFlash: false
+
     });
+
   };
 
   player.onTrackEvent = function(pCallback) {
@@ -136,8 +157,8 @@
       return false;
     }
 
-    if (_track) {
-      _track.stop();
+    if (_track && _track.playState === 1) {
+      _track.pause();
     }
 
     _data = pTrackData;
