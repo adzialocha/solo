@@ -15,7 +15,7 @@
   var DEFAULT_TRACK_NUMBER = 0;
 
   var LIVE_WEBSOCKET_SERVER = 'localhost';
-  var LIVE_WEBSOCKET_PORT = 8000;
+  var LIVE_WEBSOCKET_PORT = 8001;
 
   var OSC_LIB_PATH = './scripts/lib/osc.min.js';
 
